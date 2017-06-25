@@ -1,0 +1,77 @@
+@font-face {
+  font-family: Sketch;
+  font-style: normal;
+  src: url("Sketch3D.woff");
+  color: #1753af;
+}
+html {
+  background-image: url("../images/main_background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.container {
+  background-color: #808080;
+  height: 500px;
+  margin: 40px auto;
+  width: 500px;
+}
+h1 {
+  font-family: Sketch;
+  font-size: 5rem;
+  margin: 15px;
+  text-align: center;
+  background: #e4b50b;
+}
+.energybar {
+  background: #484949;
+  height: 40px;
+  margin: auto;
+  position: relative;
+  width: 500px;
+}
+.cell {
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  float: left;
+  height: 50px;
+  width: 50px;
+}
+.player {
+  border: 5px solid #12cdf6;
+}
+.keybox {
+  border: 5px solid #f00;
+}
+@-moz-keyframes fillBar {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+@-webkit-keyframes fillBar {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+@-o-keyframes fillBar {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+@keyframes fillBar {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
