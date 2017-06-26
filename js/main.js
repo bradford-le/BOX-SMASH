@@ -16,7 +16,7 @@ function Game () {
     this.drawKeyBox();
     this.generatePlayer();
     this.drawPlayer();
-    this.controlPlayer();
+    this.PlayerMovement();
 }
 
 Game.prototype.generateKeyBox = function () {
@@ -51,7 +51,7 @@ Game.prototype.clearPlayer = function() {
   $('.player').removeClass('player');
 };
 
-Game.prototype.controlPlayer = function() {
+Game.prototype.PlayerMovement = function() {
   $('body').on('keydown', function(e) {
     switch (e.keyCode) {
       case 38: // arrow up
@@ -59,24 +59,23 @@ Game.prototype.controlPlayer = function() {
         row: (this.player.row-1+10)%10,
         column: this.player.column
       };
-      this.clearPlayer();
-      this.drawPlayer();
+        this.checkKeyCollision();
         break;
       case 40: // arrow down
       this.player = {
         row: (this.player.row+1+10)%10,
         column: this.player.column
       };
-      this.clearPlayer();
-      this.drawPlayer();
+        this.clearPlayer();
+        this.drawPlayer();
         break;
       case 37: // arrow left
       this.player = {
         row: this.player.row,
         column: (this.player.column-1+10)%10
       };
-      this.clearPlayer();
-      this.drawPlayer();
+        this.clearPlayer();
+        this.drawPlayer();
         break;
       case 39: // arrow right
       this.player = {
@@ -87,17 +86,26 @@ Game.prototype.controlPlayer = function() {
         this.drawPlayer();
         break;
         }
-    }.bind(this));
+    }.bind(this)); //bind(this) allows row to be for player.row to be used in switch
 };
 
-Game.prototype.update = function() {
+Game.prototype.keyBoxFound = function(keyBoxPosition){
+  return this.player.row === keyBoxPosition.row && this.player.column === keyBoxPosition.column;
+  };
 
+Game.prototype.checkKeyCollision = function(){
+  if(this.keyBoxFound(this.keyBox)){
+
+    alert("YOU LANDED ON A KEYBOX");
+  } else {
+    this.clearPlayer();
+    this.drawPlayer();
+  }
 };
 
 var game;
 
 $(document).ready(function() {
   game = new Game();
-
 
 });

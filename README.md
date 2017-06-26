@@ -26,8 +26,9 @@ Pseudo ```
 2. Create the divs for squares in board (done)
 3. Create the obstacles first! start with KEY box (done)
 4. Generate KEY box then generate Player to not collide with KEY box (done)
-5. Assign keys to player to move with arrow keys
-6. Have KEY box recognize with player is on KEY box
+5. Assign keys to player to move with arrow keys (done)
+6. Have KEY box recognize with player is on KEY box (done)
+7. When player is on KEYBOX, create a new popup to display the challenge
 -Before every level
   * Generate obstacles
   * Display obstacles
