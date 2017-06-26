@@ -1,6 +1,7 @@
 function Game () {
 
-  this.player = new Player();
+  this.keyBox = undefined;
+  this.player = undefined;
 
   for (var row = 0; row < 10; row++) {
     for (var col = 0; col < 10; col++) {
@@ -15,6 +16,7 @@ function Game () {
     this.drawKeyBox();
     this.generatePlayer();
     this.drawPlayer();
+    this.controlPlayer();
 }
 
 Game.prototype.generateKeyBox = function () {
@@ -22,7 +24,6 @@ Game.prototype.generateKeyBox = function () {
     row:Math.floor(Math.random() * 10),
     column: Math.floor(Math.random() * 10)
   };
-  console.log(this.keyBox);
 };
 
 Game.prototype.drawKeyBox = function () {
@@ -33,7 +34,6 @@ Game.prototype.drawKeyBox = function () {
 
 Game.prototype.generatePlayer = function() {
   do {
-    console.log("player test");
     this.player = {
       row: Math.floor(Math.random() * 10),
       column: Math.floor(Math.random() * 10)
@@ -47,29 +47,52 @@ Game.prototype.drawPlayer = function() {
   $(selector).addClass('player');
 };
 
-function Player () {
-  this.player = undefined;
-}
+Game.prototype.clearPlayer = function() {
+  $('.player').removeClass('player');
+};
 
-Player.prototype.keyStrokes = function() {
+Game.prototype.controlPlayer = function() {
   $('body').on('keydown', function(e) {
     switch (e.keyCode) {
       case 38: // arrow up
-        this.player.goUp();
+      this.player = {
+        row: (this.player.row-1+10)%10,
+        column: this.player.column
+      };
+      this.clearPlayer();
+      this.drawPlayer();
         break;
       case 40: // arrow down
-        this.player.goDown();
+      this.player = {
+        row: (this.player.row+1+10)%10,
+        column: this.player.column
+      };
+      this.clearPlayer();
+      this.drawPlayer();
         break;
       case 37: // arrow left
-        this.player.goLeft();
+      this.player = {
+        row: this.player.row,
+        column: (this.player.column-1+10)%10
+      };
+      this.clearPlayer();
+      this.drawPlayer();
         break;
       case 39: // arrow right
-        this.player.goRight();
+      this.player = {
+        row: this.player.row,
+        column: (this.player.column+1+10)%10
+      };
+        this.clearPlayer();
+        this.drawPlayer();
         break;
         }
-    });
+    }.bind(this));
 };
 
+Game.prototype.update = function() {
+
+};
 
 var game;
 

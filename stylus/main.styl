@@ -18,11 +18,13 @@ html
   width: 500px;
 }
 h1{
+  background: rgba(#e4b50b)
+  border-radius: 10px;
   font-family Sketch
   font-size: 5rem;
   margin: 15px;
   text-align: center;
-  background: rgba(#e4b50b)
+  width: 90%
 }
 .energybar {
   background: #484949;
@@ -45,19 +47,24 @@ h1{
 .keybox
   border: 5px solid red;
 
+.timerwrapper {
+  height: 60px;
+  width: 100%;
+  background: #484949;
+  position: relative;
+  margin: auto;
+}
 
-
-
-// shrinking($item, $duration) {
-// $duration = unit($duration, 's');
+shrinking($item, $duration) {
+  $duration = unit($duration, 's');
 
   {$item} {
-    animation: fillBar $duration ease-in infinite;
-    background-image: linear-gradient(to right, #f00439,orange,#1de013);
-    bottom: 0;
+    width: 0%;
     height: 40px;
     position: absolute;
-    width: 0%;
+    bottom: 0;
+    animation: fillBar $duration ease-in infinite;
+    background-image: linear-gradient(to right, red, orange,green);
   }
 
   @keyframes fillBar {
@@ -68,5 +75,5 @@ h1{
         width: 0%;
       }
   }
-
-shrinking('.shrinking', 600000);
+}
+shrinking('.shrinking', 60);

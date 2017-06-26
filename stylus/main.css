@@ -17,11 +17,13 @@ html {
   width: 500px;
 }
 h1 {
+  background: #e4b50b;
+  border-radius: 10px;
   font-family: Sketch;
   font-size: 5rem;
   margin: 15px;
   text-align: center;
-  background: #e4b50b;
+  width: 90%;
 }
 .energybar {
   background: #484949;
@@ -42,6 +44,21 @@ h1 {
 }
 .keybox {
   border: 5px solid #f00;
+}
+.timerwrapper {
+  height: 60px;
+  width: 100%;
+  background: #484949;
+  position: relative;
+  margin: auto;
+}
+.shrinking {
+  width: 0%;
+  height: 40px;
+  position: absolute;
+  bottom: 0;
+  animation: fillBar 60s ease-in infinite;
+  background-image: linear-gradient(to right, #f00, #ffa500, #008000);
 }
 @-moz-keyframes fillBar {
   0% {
