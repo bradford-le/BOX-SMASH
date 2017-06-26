@@ -1,12 +1,12 @@
-#BOX SMASH
+# BOX SMASH
 
-##BCN Ironhack Game - Project 1
+## BCN Ironhack Game - Project 1
 
-##Game Objectives
+## Game Objectives
 
 Player uses arrows keys to navigate on the board to the desired "box" to SMASH. Once all boxes on the board are cleared, additional time is added and player can move on to the next level
 
-##Types of Boxes
+## Types of Boxes
 
 1.) **KEY:** This box will have a keyboard value and number value to indicate the number of times the player must enter to *smash* the box
   * Example, a box with "KEY: ENTER" 10 means the player must select the box and click "ENTER" 10 times to smash the box
