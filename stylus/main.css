@@ -4,13 +4,13 @@
   src: url("Sketch3D.woff");
 }
 html {
-  background-image: url("../images/main_background.jpg");
+  background-image: url("../images/background2.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 .container {
-  background-color: #808080;
+  background-color: #bda673;
   height: 500px;
   margin: 40px auto;
   width: 500px;
@@ -18,11 +18,25 @@ html {
 h1 {
   font-family: Sketch;
   font-size: 5rem;
-  margin: 15px;
+  margin: 15px auto;
   text-align: center;
-  width: 90%;
-  color: #e7b218;
+  width: 50%;
   font-weight: lighter;
+  background-image: radial-gradient(#ff0, #9f710a);
+  border-radius: 10px;
+}
+.popuptext {
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
 }
 .energybar {
   background: #484949;
@@ -37,12 +51,25 @@ h1 {
   float: left;
   height: 50px;
   width: 50px;
+  text-align: center;
+  font-size: 2rem;
+  color: #fff;
 }
 .player {
   border: 5px solid #12cdf6;
+  background-color: rgba(87,172,209,0.5);
 }
 .keybox {
   border: 5px solid #f00;
+  background-color: rgba(205,50,16,0.5);
+}
+.mathbox {
+  border: 5px solid #ff0;
+  background-color: rgba(247,239,37,0.5);
+}
+.riddlebox {
+  border: 5px solid #008000;
+  background-color: rgba(22,195,50,0.5);
 }
 .timerwrapper {
   height: 60px;
@@ -56,7 +83,7 @@ h1 {
   height: 40px;
   position: absolute;
   bottom: 0;
-  animation: fillBar 0s ease-in infinite;
+  animation: fillBar 30s ease-in infinite;
   background-image: linear-gradient(to right, #f00, #ffa500, #008000);
 }
 @-moz-keyframes fillBar {

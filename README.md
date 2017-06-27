@@ -40,3 +40,9 @@ Pseudo ```
   * Verify if player on a box   
   * Update board (like snake)
 ```
+Levels
+1 - Generate one Key Box
+2 - Generate two Key Boxes
+3 - Generate one Key Box one Math Box
+4 - Generate two Key Box one Math Box
+5 - Generate one Key Box three Math Box 
