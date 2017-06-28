@@ -1,7 +1,7 @@
 function Game () {
 
   this.Boxes = [];
-  this.level = 15; //freezes at 10 boxes
+  this.level = 15;
   this.boxTypes = ["key","math","riddle"];
   var type = "";
 
@@ -37,10 +37,10 @@ Game.prototype.drawKeyBox = function () {
   $(selector).html("<span>?</span>");
     };
 
-Game.prototype.clearKeyBox = function() {
-  $('.keybox').html("");
-  $('.keybox').attr("key","");
-  $('.keybox').removeClass('keybox');
+Game.prototype.clearKeyBox = function(pos) {
+  $(pos).html("");
+  $(pos).attr("data-type","");
+  $(pos).removeClass('keybox');
 };
 
 Game.prototype.generateMathBox = function () {
@@ -63,10 +63,10 @@ Game.prototype.drawMathBox = function () {
   $(selector).html("<span>?</span>");
     };
 
-Game.prototype.clearMathBox = function() {
-  $('.mathbox').html("");
-  $('.mathbox').attr("math","");
-  $('.mathbox').removeClass('mathbox');
+Game.prototype.clearMathBox = function(pos) {
+  $(pos).html("");
+  $(pos).attr("data-type","");
+  $(pos).removeClass('mathbox');
 };
 
 Game.prototype.generateRiddleBox = function () {
@@ -89,17 +89,18 @@ Game.prototype.drawRiddleBox = function () {
   $(selector).html("<span>?</span>");
     };
 
-Game.prototype.clearRiddleBox = function() {
-  $('.riddlebox').html("");
-  $('.riddlebox').attr("riddle","");
-  $('.riddlebox').removeClass('riddlebox');
+Game.prototype.clearRiddleBox = function(pos) {
+  $(pos).html("");
+  $(pos).attr("data-type","");
+  $(pos).removeClass('riddlebox');
 };
 
 Game.prototype.generatePlayer = function() {
   do {
     this.player = {
       row: Math.floor(Math.random() * 10),
-      col: Math.floor(Math.random() * 10)
+      col: Math.floor(Math.random() * 10),
+      type:""
     };
     console.log("Player attempts");
   } while (this.checkCollsion(this.player));
@@ -177,6 +178,7 @@ Game.prototype.start = function() {
       this.playerMovement();
 };
 
+
 Game.prototype.checkCollsion = function(box) { //box is newBox
   return this.Boxes.some(function(currentBox,index) { //currentBox is first element in Boxes array
     return currentBox.row === box.row && currentBox.col === box.col;
@@ -185,12 +187,32 @@ Game.prototype.checkCollsion = function(box) { //box is newBox
 
 Game.prototype.checkBoxFound = function(){
   if(this.checkCollsion(this.player)){
-    console.log("COLLISION!");
-    this.clearKeyBox();
-    this.clearPlayer();
-    this.drawPlayer();
-    setTimeout(function() {
-      keyInput = prompt("Hit " + this.keyBox.key + " " + this.keyBox.number + " times");}.bind(this),200);
+    var playerSelector = '[data-row=' + this.player.row + ']' +
+                          '[data-col=' + this.player.col + ']';
+    console.log($(playerSelector).attr('data-type'));
+    switch ($(playerSelector).attr('data-type')) {
+      case "key":
+      this.clearKeyBox(playerSelector);
+      this.clearPlayer();
+      this.drawPlayer();
+      setTimeout(function() {
+        keyInput = prompt("Hit " + this.keyBox.key + " " + this.keyBox.number + " times");}.bind(this),100);
+        break;
+      case "math":
+      this.clearMathBox(playerSelector);
+      this.clearPlayer();
+      this.drawPlayer();
+      setTimeout(function() {
+        keyInput = prompt("Hit " + this.keyBox.key + " " + this.keyBox.number + " times");}.bind(this),100);
+        break;
+      case "riddle":
+      this.clearRiddleBox(playerSelector);
+      this.clearPlayer();
+      this.drawPlayer();
+      setTimeout(function() {
+        keyInput = prompt("Hit " + this.keyBox.key + " " + this.keyBox.number + " times");}.bind(this),100);
+        break;
+    }
   } else {
     console.log("NO COLLISION!");
     this.clearPlayer();
