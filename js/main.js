@@ -1,7 +1,7 @@
 function Game () {
 
   this.Boxes = [];
-  this.level = 5;
+  this.level = 1;
   this.boxTypes = ["key","math","riddle"];
   var type = "";
 
@@ -168,6 +168,8 @@ Game.prototype.start = function() {
       this.generatePlayer();
       this.drawPlayer();
       this.playerMovement();
+      $('.level').html("LEVEL: " + this.level);
+    $('.shrinking').css("animation","fillBar 60s linear 1");
 };
 
 Game.prototype.checkCollsion = function(box) { //box is newBox
@@ -223,6 +225,9 @@ Game.prototype.checkBoxFound = function(){
 Game.prototype.checkClearedBoard = function() {
   if(this.Boxes.length === 0){
     $('#stageclear').css("visibility","visible");
+    setTimeout($('#stageclear').css("visibility","hidden"),1000);
+    this.level++;
+    game.start();
   }
 };
 

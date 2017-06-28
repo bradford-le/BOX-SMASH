@@ -43,6 +43,19 @@ h2 {
   margin: auto;
   font-size: 3rem;
 }
+.level {
+  width: 200px;
+  height: 55px;
+  background-color: #623b08;
+  border: 3px solid #fff;
+  text-align: left;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  top: 2rem;
+  font-size: 3rem;
+  padding: 5px;
+}
 #start {
   visibility: visible;
   background-color: #a7a7a4;
@@ -136,7 +149,7 @@ button {
   height: 40px;
   position: absolute;
   bottom: 0;
-  animation: fillBar 30s ease-in infinite;
+  animation: fillBar 0s linear 1;
   background-image: linear-gradient(to right, #f00, #ffa500, #008000);
 }
 @-moz-keyframes fillBar {
