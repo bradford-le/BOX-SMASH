@@ -1,7 +1,7 @@
 function Game () {
 
   this.Boxes = [];
-  this.level = 15;
+  this.level = 10;
   this.boxTypes = ["key","math","riddle"];
   var type = "";
 
@@ -24,7 +24,6 @@ Game.prototype.generateKeyBox = function () {
       col: Math.floor(Math.random() * 10),
       type: "key"
     };
-    console.log("key attempts");
   }while(this.checkCollsion(this.keyBox));
   this.Boxes.push(this.keyBox);
 };
@@ -50,7 +49,6 @@ Game.prototype.generateMathBox = function () {
       col: Math.floor(Math.random() * 10),
       type: "math"
     };
-    console.log("math attempts");
   }while(this.checkCollsion(this.mathBox));
   this.Boxes.push(this.mathBox);
 };
@@ -76,7 +74,6 @@ Game.prototype.generateRiddleBox = function () {
       col: Math.floor(Math.random() * 10),
       type: "riddle"
     };
-    console.log("riddle attempts");
   }while(this.checkCollsion(this.riddleBox));
   this.Boxes.push(this.riddleBox);
 };
@@ -102,7 +99,6 @@ Game.prototype.generatePlayer = function() {
       col: Math.floor(Math.random() * 10),
       type:""
     };
-    console.log("Player attempts");
   } while (this.checkCollsion(this.player));
 };
 
@@ -125,8 +121,7 @@ Game.prototype.playerMovement = function() {
         col: this.player.col
       };
         this.checkBoxFound();
-        // this.clearPlayer();
-        // this.drawPlayer();
+        this.checkClearedBoard();
         break;
       case 40: // arrow down
       this.player = {
@@ -134,8 +129,7 @@ Game.prototype.playerMovement = function() {
         col: this.player.col
       };
         this.checkBoxFound();
-      // this.clearPlayer();
-      // this.drawPlayer();
+        this.checkClearedBoard();
         break;
       case 37: // arrow left
       this.player = {
@@ -143,8 +137,7 @@ Game.prototype.playerMovement = function() {
         col: (this.player.col-1+10)%10
       };
         this.checkBoxFound();
-      // this.clearPlayer();
-      // this.drawPlayer();
+        this.checkClearedBoard();
         break;
       case 39: // arrow right
       this.player = {
@@ -152,8 +145,7 @@ Game.prototype.playerMovement = function() {
         col: (this.player.col+1+10)%10
       };
         this.checkBoxFound();
-      // this.clearPlayer();
-      // this.drawPlayer();
+        this.checkClearedBoard();
         break;
         }
     }.bind(this)); //bind(this) allows row to be for player.row to be used in switch
@@ -178,23 +170,28 @@ Game.prototype.start = function() {
       this.playerMovement();
 };
 
-
 Game.prototype.checkCollsion = function(box) { //box is newBox
-  return this.Boxes.some(function(currentBox,index) { //currentBox is first element in Boxes array
+  return this.Boxes.some(function(currentBox) { //currentBox is first element in Boxes array
+    return currentBox.row === box.row && currentBox.col === box.col;
+  });
+};
+
+Game.prototype.removeBoxFromArray = function(box) { //this should be player box
+  return this.Boxes.findIndex(function(currentBox){ //this is the Boxes array
     return currentBox.row === box.row && currentBox.col === box.col;
   });
 };
 
 Game.prototype.checkBoxFound = function(){
   if(this.checkCollsion(this.player)){
-    var playerSelector = '[data-row=' + this.player.row + ']' +
-                          '[data-col=' + this.player.col + ']';
-    console.log($(playerSelector).attr('data-type'));
+    var playerSelector = '[data-row=' + this.player.row + ']' + '[data-col=' + this.player.col + ']';
     switch ($(playerSelector).attr('data-type')) {
       case "key":
       this.clearKeyBox(playerSelector);
       this.clearPlayer();
       this.drawPlayer();
+      var boxIndex = this.removeBoxFromArray(this.player); // RETURNS INDEX FROM ARRAY TO BE REMOVED
+      this.Boxes.splice(boxIndex,1);
       setTimeout(function() {
         keyInput = prompt("Hit " + this.keyBox.key + " " + this.keyBox.number + " times");}.bind(this),100);
         break;
@@ -202,6 +199,8 @@ Game.prototype.checkBoxFound = function(){
       this.clearMathBox(playerSelector);
       this.clearPlayer();
       this.drawPlayer();
+      boxIndex = this.removeBoxFromArray(this.player); // RETURNS INDEX FROM ARRAY TO BE REMOVED
+      this.Boxes.splice(boxIndex,1);
       setTimeout(function() {
         keyInput = prompt("Hit " + this.keyBox.key + " " + this.keyBox.number + " times");}.bind(this),100);
         break;
@@ -209,14 +208,21 @@ Game.prototype.checkBoxFound = function(){
       this.clearRiddleBox(playerSelector);
       this.clearPlayer();
       this.drawPlayer();
+      boxIndex = this.removeBoxFromArray(this.player); // RETURNS INDEX FROM ARRAY TO BE REMOVED
+      this.Boxes.splice(boxIndex,1);
       setTimeout(function() {
         keyInput = prompt("Hit " + this.keyBox.key + " " + this.keyBox.number + " times");}.bind(this),100);
         break;
     }
   } else {
-    console.log("NO COLLISION!");
     this.clearPlayer();
     this.drawPlayer();
+  }
+};
+
+Game.prototype.checkClearedBoard = function() {
+  if(this.Boxes.length === 0){
+    console.log("STAGE PASSED!");
   }
 };
 
