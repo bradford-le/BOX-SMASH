@@ -1,7 +1,7 @@
 function Game () {
 
   this.Boxes = [];
-  this.level = 10;
+  this.level = 5;
   this.boxTypes = ["key","math","riddle"];
   var type = "";
 
@@ -222,12 +222,15 @@ Game.prototype.checkBoxFound = function(){
 
 Game.prototype.checkClearedBoard = function() {
   if(this.Boxes.length === 0){
-    console.log("STAGE PASSED!");
+    $('#stageclear').css("visibility","visible");
   }
 };
 
 var game;
 $(document).ready(function() {
   game = new Game();
+$('.start-button').click(function() {
+  $('#start').css('visibility','hidden');
   game.start();
+});
 });
