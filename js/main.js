@@ -112,43 +112,115 @@ Game.prototype.clearPlayer = function() {
   $('.player').removeClass('player');
 };
 
-Game.prototype.playerMovement = function() {
+Game.prototype.assignControlsToKeys = function() {
   $('body').on('keydown', function(e) {
     switch (e.keyCode) {
       case 38: // arrow up
+        this.playerMovement("up");
+        break;
+      case 40: // arrow down
+        this.playerMovement("down");
+        break;
+      case 37: // arrow left
+        this.playerMovement("left");
+        break;
+      case 39: // arrow right
+        this.playerMovement("right");
+        break;
+        }
+    }.bind(this)); //bind(this) allows row to be for player.row to be used in switch
+};
+
+Game.prototype.playerMovement = function(direction) {
+    switch (direction) {
+      case "up": // arrow up
       this.player = {
         row: (this.player.row-1+10)%10,
         col: this.player.col
       };
-        this.checkBoxFound();
-        this.checkClearedBoard();
         break;
-      case 40: // arrow down
+      case "down": // arrow down
       this.player = {
         row: (this.player.row+1+10)%10,
         col: this.player.col
       };
-        this.checkBoxFound();
-        this.checkClearedBoard();
         break;
-      case 37: // arrow left
+      case "left": // arrow left
       this.player = {
         row: this.player.row,
         col: (this.player.col-1+10)%10
       };
-        this.checkBoxFound();
-        this.checkClearedBoard();
         break;
-      case 39: // arrow right
+      case "right": // arrow right
       this.player = {
         row: this.player.row,
         col: (this.player.col+1+10)%10
       };
-        this.checkBoxFound();
-        this.checkClearedBoard();
         break;
         }
-    }.bind(this)); //bind(this) allows row to be for player.row to be used in switch
+        this.checkBoxFound();
+        this.checkClearedBoard();
+        console.log(this.player);
+    }; //bind(this) allows row to be for player.row to be used in switch
+
+Game.prototype.checkCollsion = function(box) { //box is newBox
+  return this.Boxes.some(function(currentBox) { //currentBox is first element in Boxes array
+    return currentBox.row === box.row && currentBox.col === box.col;
+  });
+};
+
+Game.prototype.removeBoxFromArray = function(box) { //this should be player box
+  return this.Boxes.findIndex(function(currentBox){ //this is the Boxes array
+    return currentBox.row === box.row && currentBox.col === box.col;
+  });
+};
+
+Game.prototype.checkBoxFound = function(){
+  if(this.checkCollsion(this.player)){
+    var playerSelector = '[data-row=' + this.player.row + ']' + '[data-col=' + this.player.col + ']';
+    var boxIndex = this.removeBoxFromArray(this.player); // RETURNS INDEX FROM ARRAY TO BE REMOVED
+    switch ($(playerSelector).attr('data-type')) {
+      case "key":
+      setTimeout(function() { prompt("SOLVE KEY BOX CHALLENGE");},100); //make a function
+      this.clearPlayer();
+      this.drawPlayer();
+      this.clearKeyBox(playerSelector);
+      this.Boxes.splice(boxIndex,1);
+        break;
+      case "math":
+      setTimeout(function() { prompt("SOLVE KEY BOX CHALLENGE");},100); //make a function
+      this.clearPlayer();
+      this.drawPlayer();
+      this.clearMathBox(playerSelector);
+      this.Boxes.splice(boxIndex,1);
+        break;
+      case "riddle":
+      setTimeout(function() { prompt("SOLVE KEY BOX CHALLENGE");},100); //make a function
+      this.clearPlayer();
+      this.drawPlayer();
+      this.clearRiddleBox(playerSelector);
+      this.Boxes.splice(boxIndex,1);
+        break;
+    }
+  } else {
+    this.clearPlayer();
+    this.drawPlayer();
+  }
+};
+
+Game.prototype.checkClearedBoard = function() {
+  if(this.Boxes.length === 0){
+    $('.shrinking').css("animation","fillBar 0s linear 1");
+    $('#stageclear').css("visibility","visible");
+    this.clearPlayer();
+    $('body').off();
+    $('.continue').click(function(){
+    $('#stageclear').css("visibility","hidden");
+    this.level++;
+    console.log(this.level);
+    game.start();
+  }.bind(this));
+  }
 };
 
 Game.prototype.start = function() {
@@ -167,68 +239,10 @@ Game.prototype.start = function() {
   }
       this.generatePlayer();
       this.drawPlayer();
-      this.playerMovement();
+      this.assignControlsToKeys();
       $('.level').html("LEVEL: " + this.level);
+      console.log("LEVEL WHEN GAME START IS CALLED: ",this.level);
     $('.shrinking').css("animation","fillBar 60s linear 1");
-};
-
-Game.prototype.checkCollsion = function(box) { //box is newBox
-  return this.Boxes.some(function(currentBox) { //currentBox is first element in Boxes array
-    return currentBox.row === box.row && currentBox.col === box.col;
-  });
-};
-
-Game.prototype.removeBoxFromArray = function(box) { //this should be player box
-  return this.Boxes.findIndex(function(currentBox){ //this is the Boxes array
-    return currentBox.row === box.row && currentBox.col === box.col;
-  });
-};
-
-Game.prototype.checkBoxFound = function(){
-  if(this.checkCollsion(this.player)){
-    var playerSelector = '[data-row=' + this.player.row + ']' + '[data-col=' + this.player.col + ']';
-    switch ($(playerSelector).attr('data-type')) {
-      case "key":
-      this.clearKeyBox(playerSelector);
-      this.clearPlayer();
-      this.drawPlayer();
-      var boxIndex = this.removeBoxFromArray(this.player); // RETURNS INDEX FROM ARRAY TO BE REMOVED
-      this.Boxes.splice(boxIndex,1);
-      setTimeout(function() {
-        keyInput = prompt("Hit " + this.keyBox.key + " " + this.keyBox.number + " times");}.bind(this),100);
-        break;
-      case "math":
-      this.clearMathBox(playerSelector);
-      this.clearPlayer();
-      this.drawPlayer();
-      boxIndex = this.removeBoxFromArray(this.player); // RETURNS INDEX FROM ARRAY TO BE REMOVED
-      this.Boxes.splice(boxIndex,1);
-      setTimeout(function() {
-        keyInput = prompt("Hit " + this.keyBox.key + " " + this.keyBox.number + " times");}.bind(this),100);
-        break;
-      case "riddle":
-      this.clearRiddleBox(playerSelector);
-      this.clearPlayer();
-      this.drawPlayer();
-      boxIndex = this.removeBoxFromArray(this.player); // RETURNS INDEX FROM ARRAY TO BE REMOVED
-      this.Boxes.splice(boxIndex,1);
-      setTimeout(function() {
-        keyInput = prompt("Hit " + this.keyBox.key + " " + this.keyBox.number + " times");}.bind(this),100);
-        break;
-    }
-  } else {
-    this.clearPlayer();
-    this.drawPlayer();
-  }
-};
-
-Game.prototype.checkClearedBoard = function() {
-  if(this.Boxes.length === 0){
-    $('#stageclear').css("visibility","visible");
-    setTimeout($('#stageclear').css("visibility","hidden"),1000);
-    this.level++;
-    game.start();
-  }
 };
 
 var game;
