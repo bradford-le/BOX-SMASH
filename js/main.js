@@ -209,7 +209,7 @@ Game.prototype.checkBoxFound = function(){
 
 Game.prototype.checkClearedBoard = function() {
   if(this.Boxes.length === 0){
-    $('.shrinking').css("animation","fillBar 0s linear 1");
+    // $('.shrinking').css("animation","fillBar 0s linear 1");
     $('#stageclear').css("visibility","visible");
     this.clearPlayer();
     $('.continue').click(function(){
@@ -220,6 +220,7 @@ Game.prototype.checkClearedBoard = function() {
 };
 
 Game.prototype.start = function() {
+  console.log("START CALLED");
   for(var i = this.level; i>0 ; i--) {
     var randomBox = this.boxTypes[Math.floor(Math.random()*3)];
     if(randomBox==="key"){
@@ -237,10 +238,11 @@ Game.prototype.start = function() {
       this.drawPlayer();
       this.assignControlsToKeys();
       $('.level').html("LEVEL: " + this.level);
-    $('.shrinking').css("animation","fillBar 60s linear 1");
+    // $('.shrinking').css("animation","fillBar 60s linear 1");
 };
 
 Game.prototype.newLevel = function () {
+  console.log("NEW LEVEL CALLED");
     this.level++;
   for(var i = this.level; i>0 ; i--) {
     var randomBox = this.boxTypes[Math.floor(Math.random()*3)];
@@ -258,14 +260,42 @@ Game.prototype.newLevel = function () {
       this.generatePlayer();
       this.drawPlayer();
       $('.level').html("LEVEL: " + this.level);
-    $('.shrinking').css("animation","fillBar 100s linear 1");
+
+      var shrinkingelement = $('.shrinking');
+      newShrink = shrinkingelement.clone(true);
+      shrinkingelement.before(newShrink);
+      $(".shrinking:last").remove();
+      $('.shrinking').one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
+          function(e) {
+          console.log("TIMER ENDED!");
+          });
 };
 
 var game;
 $(document).ready(function() {
   game = new Game();
-$('.start-button').click(function() {
+  $('.start-button').click(function() {
   $('#start').css('visibility','hidden');
+  $('.shrinking').addClass('start-animation');
   game.start();
+  $('.shrinking').one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
+      function(e) {
+      console.log("TIMER ENDED!");
+      // code to execute after animation ends
+      });
 });
 });
+
+
+// myBox.one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
+//     function(e) {
+//
+//     // code to execute after animation ends
+//
+//     myBox.removeClass('change-size');
+//     });
+
+// var shrinkingelement = $('.shrinking');
+// newShrink = shrinkingelement.clone(true);
+//shrinkingelement.before(newShrink);
+//$(".shrinking:last"):remove();

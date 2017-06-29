@@ -150,9 +150,21 @@ button {
   height: 40px;
   position: absolute;
   bottom: 0;
-  animation: fillBar 0s linear 1;
+  /*animation-name:fillBar;
+  animation-duration: 60s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  background-image: linear-gradient(to right, #f00, #ffa500, #008000);*/
+}
+
+.start-animation {
+  animation-name:fillBar;
+  animation-duration: 60s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
   background-image: linear-gradient(to right, #f00, #ffa500, #008000);
 }
+
 @-moz-keyframes fillBar {
   0% {
     width: 100%;
