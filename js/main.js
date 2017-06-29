@@ -160,7 +160,6 @@ Game.prototype.playerMovement = function(direction) {
         }
         this.checkBoxFound();
         this.checkClearedBoard();
-        console.log(this.player);
     }; //bind(this) allows row to be for player.row to be used in switch
 
 Game.prototype.checkCollsion = function(box) { //box is newBox
@@ -213,13 +212,10 @@ Game.prototype.checkClearedBoard = function() {
     $('.shrinking').css("animation","fillBar 0s linear 1");
     $('#stageclear').css("visibility","visible");
     this.clearPlayer();
-    $('body').off();
     $('.continue').click(function(){
     $('#stageclear').css("visibility","hidden");
-    this.level++;
-    console.log(this.level);
-    game.start();
   }.bind(this));
+    game.newLevel();
   }
 };
 
@@ -241,8 +237,28 @@ Game.prototype.start = function() {
       this.drawPlayer();
       this.assignControlsToKeys();
       $('.level').html("LEVEL: " + this.level);
-      console.log("LEVEL WHEN GAME START IS CALLED: ",this.level);
     $('.shrinking').css("animation","fillBar 60s linear 1");
+};
+
+Game.prototype.newLevel = function () {
+    this.level++;
+  for(var i = this.level; i>0 ; i--) {
+    var randomBox = this.boxTypes[Math.floor(Math.random()*3)];
+    if(randomBox==="key"){
+      this.generateKeyBox();
+      this.drawKeyBox();
+    } else if(randomBox ==="math") {
+      this.generateMathBox();
+      this.drawMathBox();
+    } else if(randomBox ==="riddle"){
+      this.generateRiddleBox();
+      this.drawRiddleBox();
+    }
+  }
+      this.generatePlayer();
+      this.drawPlayer();
+      $('.level').html("LEVEL: " + this.level);
+    $('.shrinking').css("animation","fillBar 100s linear 1");
 };
 
 var game;
