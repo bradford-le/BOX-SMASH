@@ -2,6 +2,7 @@ function Game () {
 
   this.Boxes = [];
   this.level = 1;
+  this.timer = 60;
   this.boxTypes = ["key","math","riddle"];
   var type = "";
 
@@ -133,6 +134,8 @@ Game.prototype.assignControlsToKeys = function() {
   $('body').on('keydown', function(e) {
     switch (e.keyCode) {
       case 38: // arrow up
+        ion.sound.play("snap");
+        console.log("test");
         this.playerMovement("up");
         break;
       case 40: // arrow down
@@ -176,7 +179,6 @@ Game.prototype.playerMovement = function(direction) {
         break;
         }
         this.checkBoxFound();
-        this.checkClearedBoard();
     }; //bind(this) allows row to be for player.row to be used in switch
 
 Game.prototype.checkCollsion = function(box) { //box is newBox
@@ -191,9 +193,14 @@ Game.prototype.removeBoxFromArray = function(box) { //this should be player box
   });
 };
 
-Game.prototype.keyChallenge = function() {
-  this.keyAnswer = prompt("TYPE YES");
-};
+// var keyanswer = "";
+// Game.prototype.keyChallenge = function() {
+//   $('#keyProblem').css('visibility','visible');
+//   $('.keysubmitanswer').click(function(){
+//     keyanswer = $('#keyboxtext').val();
+//     $('#keyProblem').css('visibility','hidden');
+//   });
+// };
 
 Game.prototype.checkBoxFound = function(){
   if(this.checkCollsion(this.player)){
@@ -201,31 +208,47 @@ Game.prototype.checkBoxFound = function(){
     var boxIndex = this.removeBoxFromArray(this.player); // RETURNS INDEX FROM ARRAY TO BE REMOVED
     switch ($(playerSelector).attr('data-type')) {
       case "key":
-      this.keyChallenge();
-      if(this.keyAnswer==="YES"){
+      var keyanswer = prompt("KEY CHALLENGE: \"IRONHACK\"");
+      if(keyanswer==="IRONHACK"){
         this.clearPlayer();
         this.drawPlayer();
         this.clearKeyBox(playerSelector);
         this.Boxes.splice(boxIndex,1);
+        this.checkClearedBoard();
       } else {
+        alert("WRONG!");
+        this.clearPlayer();
+        this.drawPlayer();
+      }
+      break;
+      case "math":
+      var mathanswer = prompt("MATH CHALLENGE: 10+5");
+      if(mathanswer==="15"){
+        this.clearPlayer();
+        this.drawPlayer();
+        this.clearMathBox(playerSelector);
+        this.Boxes.splice(boxIndex,1);
+        this.checkClearedBoard()
+      } else {
+        alert("WRONG!");
         this.clearPlayer();
         this.drawPlayer();
       }
         break;
-      case "math":
-      setTimeout(function() { prompt("SOLVE KEY BOX CHALLENGE");},100); //make a function
-      this.clearPlayer();
-      this.drawPlayer();
-      this.clearMathBox(playerSelector);
-      this.Boxes.splice(boxIndex,1);
-        break;
       case "riddle":
-      setTimeout(function() { prompt("SOLVE KEY BOX CHALLENGE");},100); //make a function
+      var riddleanswer = prompt("RIDDLE CHALLENGE: 10to1");
+      if(riddleanswer==="10987654321"){
       this.clearPlayer();
       this.drawPlayer();
       this.clearRiddleBox(playerSelector);
       this.Boxes.splice(boxIndex,1);
-        break;
+      this.checkClearedBoard();
+    } else {
+      alert("WRONG!");
+      this.clearPlayer();
+      this.drawPlayer();
+    }
+      break;
     }
   } else {
     this.clearPlayer();
@@ -283,22 +306,11 @@ $(document).ready(function() {
       game = new Game();
     $('.shrinking').one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
         function(e) {
-        console.log("TIMER ENDED!");
-      // code to execute after animation ends
+        $('#gameover').css('visibility','visible');
     });
+  $('.playagain').click(function() {
+    $('#gameover').css('visibility','hidden');
+      location.reload();
+  });
 });
 });
-
-
-// myBox.one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
-//     function(e) {
-//
-//     // code to execute after animation ends
-//
-//     myBox.removeClass('change-size');
-//     });
-
-// var shrinkingelement = $('.shrinking');
-// newShrink = shrinkingelement.clone(true);
-//shrinkingelement.before(newShrink);
-//$(".shrinking:last"):remove();
