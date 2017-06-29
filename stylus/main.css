@@ -65,7 +65,7 @@ h2 {
   font-size: 25px;
   text-decoration: none;
   text-align: left;
-  padding: 2rem;
+  padding: 1rem;
   margin: 0;
 }
 #start ul {
@@ -79,6 +79,9 @@ button {
   height: 3rem;
   font-size: 25px;
   border-radius: 5px;
+  position:absolute;
+  bottom: 2rem;
+  right: 20rem;
 }
 #keypic {
   border: 1px solid #f00;
@@ -125,6 +128,7 @@ button {
 .player {
   border: 5px solid #12cdf6;
   background-color: rgba(87,172,209,0.5);
+  z-index: 1;
 }
 .keybox {
   border: 5px solid #f00;
@@ -150,11 +154,6 @@ button {
   height: 40px;
   position: absolute;
   bottom: 0;
-  /*animation-name:fillBar;
-  animation-duration: 60s;
-  animation-timing-function: linear;
-  animation-iteration-count: 1;
-  background-image: linear-gradient(to right, #f00, #ffa500, #008000);*/
 }
 
 .start-animation {

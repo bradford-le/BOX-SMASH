@@ -15,6 +15,23 @@ function Game () {
       );
     }
   }
+  for(var i = this.level; i>0 ; i--) {
+    var randomBox = this.boxTypes[Math.floor(Math.random()*3)];
+    if(randomBox==="key"){
+      this.generateKeyBox();
+      this.drawKeyBox();
+    } else if(randomBox ==="math") {
+      this.generateMathBox();
+      this.drawMathBox();
+    } else if(randomBox ==="riddle"){
+      this.generateRiddleBox();
+      this.drawRiddleBox();
+    }
+  }
+      this.generatePlayer();
+      this.drawPlayer();
+      this.assignControlsToKeys();
+      $('.level').html("LEVEL: " + this.level);
 }
 
 Game.prototype.generateKeyBox = function () {
@@ -174,17 +191,26 @@ Game.prototype.removeBoxFromArray = function(box) { //this should be player box
   });
 };
 
+Game.prototype.keyChallenge = function() {
+  this.keyAnswer = prompt("TYPE YES");
+};
+
 Game.prototype.checkBoxFound = function(){
   if(this.checkCollsion(this.player)){
     var playerSelector = '[data-row=' + this.player.row + ']' + '[data-col=' + this.player.col + ']';
     var boxIndex = this.removeBoxFromArray(this.player); // RETURNS INDEX FROM ARRAY TO BE REMOVED
     switch ($(playerSelector).attr('data-type')) {
       case "key":
-      setTimeout(function() { prompt("SOLVE KEY BOX CHALLENGE");},100); //make a function
-      this.clearPlayer();
-      this.drawPlayer();
-      this.clearKeyBox(playerSelector);
-      this.Boxes.splice(boxIndex,1);
+      this.keyChallenge();
+      if(this.keyAnswer==="YES"){
+        this.clearPlayer();
+        this.drawPlayer();
+        this.clearKeyBox(playerSelector);
+        this.Boxes.splice(boxIndex,1);
+      } else {
+        this.clearPlayer();
+        this.drawPlayer();
+      }
         break;
       case "math":
       setTimeout(function() { prompt("SOLVE KEY BOX CHALLENGE");},100); //make a function
@@ -209,42 +235,24 @@ Game.prototype.checkBoxFound = function(){
 
 Game.prototype.checkClearedBoard = function() {
   if(this.Boxes.length === 0){
-    // $('.shrinking').css("animation","fillBar 0s linear 1");
+    $('.shrinking').removeClass('start-animation');
+    var shrinkingelement = $('.shrinking');
+    newShrink = shrinkingelement.clone(true);
+    shrinkingelement.before(newShrink);
+    $(".shrinking:last").remove();
     $('#stageclear').css("visibility","visible");
     this.clearPlayer();
     $('.continue').click(function(){
     $('#stageclear').css("visibility","hidden");
+    this.newLevel();
   }.bind(this));
-    game.newLevel();
   }
-};
-
-Game.prototype.start = function() {
-  console.log("START CALLED");
-  for(var i = this.level; i>0 ; i--) {
-    var randomBox = this.boxTypes[Math.floor(Math.random()*3)];
-    if(randomBox==="key"){
-      this.generateKeyBox();
-      this.drawKeyBox();
-    } else if(randomBox ==="math") {
-      this.generateMathBox();
-      this.drawMathBox();
-    } else if(randomBox ==="riddle"){
-      this.generateRiddleBox();
-      this.drawRiddleBox();
-    }
-  }
-      this.generatePlayer();
-      this.drawPlayer();
-      this.assignControlsToKeys();
-      $('.level').html("LEVEL: " + this.level);
-    // $('.shrinking').css("animation","fillBar 60s linear 1");
 };
 
 Game.prototype.newLevel = function () {
-  console.log("NEW LEVEL CALLED");
+    $('.continue').unbind("click");
     this.level++;
-  for(var i = this.level; i>0 ; i--) {
+    for(var i = this.level; i>0 ; i--) {
     var randomBox = this.boxTypes[Math.floor(Math.random()*3)];
     if(randomBox==="key"){
       this.generateKeyBox();
@@ -260,11 +268,7 @@ Game.prototype.newLevel = function () {
       this.generatePlayer();
       this.drawPlayer();
       $('.level').html("LEVEL: " + this.level);
-
-      var shrinkingelement = $('.shrinking');
-      newShrink = shrinkingelement.clone(true);
-      shrinkingelement.before(newShrink);
-      $(".shrinking:last").remove();
+      $(".shrinking").addClass("start-animation");
       $('.shrinking').one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
           function(e) {
           console.log("TIMER ENDED!");
@@ -273,16 +277,15 @@ Game.prototype.newLevel = function () {
 
 var game;
 $(document).ready(function() {
-  game = new Game();
   $('.start-button').click(function() {
-  $('#start').css('visibility','hidden');
-  $('.shrinking').addClass('start-animation');
-  game.start();
-  $('.shrinking').one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
-      function(e) {
-      console.log("TIMER ENDED!");
+    $('#start').css('visibility','hidden');
+    $('.shrinking').addClass('start-animation');
+      game = new Game();
+    $('.shrinking').one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
+        function(e) {
+        console.log("TIMER ENDED!");
       // code to execute after animation ends
-      });
+    });
 });
 });
 
