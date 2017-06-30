@@ -173,13 +173,7 @@ button {
   border: 5px solid #008000;
   background-color: rgba(22,195,50,0.5);
 }
-.timerwrapper {
-  height: 60px;
-  width: 100%;
-  background: #484949;
-  position: relative;
-  margin: auto;
-}
+
 .shrinking {
   width: 0%;
   height: 40px;
