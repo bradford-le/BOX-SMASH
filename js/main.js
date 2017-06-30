@@ -131,20 +131,29 @@ Game.prototype.clearPlayer = function() {
 };
 
 Game.prototype.assignControlsToKeys = function() {
+
+  var tap = document.createElement("audio");
+  tap.src="Sound/button_tiny.mp3";
+  tap.volume=0.3;
+  tap.autoPlay=false;
+  tap.preLoad=true;
+
   $('body').on('keydown', function(e) {
     switch (e.keyCode) {
       case 38: // arrow up
-        ion.sound.play("snap");
-        console.log("test");
+        tap.play();
         this.playerMovement("up");
         break;
       case 40: // arrow down
+        tap.play();
         this.playerMovement("down");
         break;
       case 37: // arrow left
+        tap.play();
         this.playerMovement("left");
         break;
       case 39: // arrow right
+        tap.play();
         this.playerMovement("right");
         break;
         }
@@ -228,7 +237,7 @@ Game.prototype.checkBoxFound = function(){
         this.drawPlayer();
         this.clearMathBox(playerSelector);
         this.Boxes.splice(boxIndex,1);
-        this.checkClearedBoard()
+        this.checkClearedBoard();
       } else {
         alert("WRONG!");
         this.clearPlayer();
@@ -300,13 +309,23 @@ Game.prototype.newLevel = function () {
 
 var game;
 $(document).ready(function() {
+
+  var obj = document.createElement("audio");
+  obj.src="Sound/Street-Fighter.mp3";
+  obj.volume=0.3;
+  obj.autoPlay=false;
+  obj.preLoad=true;
+  obj.loop = true;
+
   $('.start-button').click(function() {
     $('#start').css('visibility','hidden');
     $('.shrinking').addClass('start-animation');
       game = new Game();
+      obj.play();
     $('.shrinking').one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
         function(e) {
         $('#gameover').css('visibility','visible');
+        obj.pause();
     });
   $('.playagain').click(function() {
     $('#gameover').css('visibility','hidden');
